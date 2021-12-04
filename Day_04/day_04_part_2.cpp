@@ -6,8 +6,9 @@ using namespace std;
 int main()
 {
   string line, frst_line;
-  int file_length = 19;
+  int file_length = 601;
   int file_read = (file_length-1)/6;
+  int active_cards = file_read;
   int search_num;
   int grid [file_read][2][5][5];
   bool has_won [file_read];
@@ -17,14 +18,15 @@ int main()
   int i, j, k, l;
   int counter = 0;
   int row_sum, col_sum, un_mrk_sum = 0;
+  int last_bingo;
   bool found;
   
   ifstream myfile;
-  myfile.open("test_input.txt");
+  myfile.open("input.txt");
   
   getline(myfile, frst_line);
   //  in_int = stoi(line);
-  cout << frst_line << "\n" << "\n";
+  cout << frst_line << "\n";
 
   for (i=0; i<file_read; i++)
     {
@@ -59,7 +61,7 @@ int main()
 
   
   len = frst_line.length();
-  while ((width<len)&&(file_read>0))
+  while ((width<len)&&(active_cards>0))
     {
       width++;
       counter++;
@@ -74,15 +76,14 @@ int main()
   	  search_num  = stoi(frst_line.substr(width, comma_pos-width));
   	  width = comma_pos;
   	}
-      cout << search_num << "\n";
 
       for (i=0; i<file_read; i++)
 	{
-	  
-	  // if (has_won[i]==true)
-	  //   {
-	  //     continue;
-	  //   }
+
+	  if (has_won[i]==true)
+	    {
+	      continue;
+	    }
 	  
 	  found = false;
 	  for (j=0; j<5; j++)
@@ -93,7 +94,6 @@ int main()
 		    {
 		      grid[i][1][j][k] = 1;
 		      found = true;
-		      cout << i << " " << search_num << "\n";
 		    }
 
 
@@ -110,7 +110,8 @@ int main()
 		      if ((row_sum==5)||(col_sum==5))
 			{
 			  has_won[i] = true;
-			  file_read--;
+			  last_bingo = i;
+			  active_cards--;
 			}
 		    }
 		  
@@ -129,24 +130,15 @@ int main()
     }
 
 
-  
-  for (i=0; i<file_read; i++)
-    {
-      if (has_won[i]==false)
-	{
-	  break;
-	}
-    }
-
-
-
+  cout << "\n" << last_bingo << "\n";
+  un_mrk_sum = 0;
   for (j=0; j<5; j++)
     {
       for (k=0; k<5; k++)
 	{
-	  if (grid[i][1][j][k]==0)
+	  if (grid[last_bingo][1][j][k]==0)
 	    {
-	      un_mrk_sum += grid[i][0][j][k];
+	      un_mrk_sum += grid[last_bingo][0][j][k];
 	    }
 	}
     }
