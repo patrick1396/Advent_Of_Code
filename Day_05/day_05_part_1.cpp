@@ -6,16 +6,16 @@ using namespace std;
 int main()
 {
   string line, number;
-  int file_length = 10;
+  int file_length = 500;
   int coords[file_length][4];
   int *grid;
   int f_com=0, s_com=0, f_spc=0, s_spc=0;
   int i, j;
   int y_max = 0, x_max = 0;
-  int start, end, con;
+  int start, end, con, counter=0;
   
   ifstream myfile;
-  myfile.open("test_input.txt");
+  myfile.open("input.txt");
   
   
   for (i=0; i<file_length; i++)
@@ -51,9 +51,11 @@ int main()
 	{
 	  y_max = coords[i][3];
 	}
-      printf("%d %d %d %d\n", coords[i][0], coords[i][1], coords[i][2], coords[i][3]);
+      //printf("%d %d %d %d\n", coords[i][0], coords[i][1], coords[i][2], coords[i][3]);
     }
 
+  x_max++;
+  y_max++;
   grid = new int[x_max*y_max];
 
   for (i=0; i<x_max*y_max; i++)
@@ -77,6 +79,11 @@ int main()
 	      end = coords[i][1];
 	    }
 
+	  for (j=start; j<end+1; j++)
+	    {
+	      grid[con+j*y_max]++;
+	    }
+
 
   	}
       else if (coords[i][1]==coords[i][3])
@@ -93,21 +100,30 @@ int main()
 	      end = coords[i][0];
 	    }
 
+	  for (j=start; j<end+1; j++)
+	    {
+	      grid[j+con*y_max]++;
+	    }
 
 	  
   	}
     }
 
-  cout << "\n";
+  //cout << "\n";
   for (i=0; i<x_max*y_max; i++)
     {
-      cout << grid[i] << " ";
-      if (i%x_max==x_max-1)
+      //cout << grid[i] << " ";
+      if (grid[i]>1)
 	{
-	  cout << "\n";
+	  counter++;
 	}
+      // if (i%x_max==x_max-1)
+      // 	{
+      // 	  cout << "\n";
+      // 	}
     }
-  
+
+  printf("%d\n", counter);
   myfile.close();
 
 }
