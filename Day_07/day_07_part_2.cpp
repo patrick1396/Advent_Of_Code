@@ -42,8 +42,9 @@ int main()
   
   int i, j, k;
   int diff;
-  long long int fuel = 0, min_fuel = 100000000000;
-  int mean;
+  long long int fuel = 0;
+  int contr;
+  double mean = 0.0;
   
   ifstream myfile;
   myfile.open("input.txt");
@@ -86,30 +87,36 @@ int main()
       
       pos[i] = stoi(line.substr(width, com_pos-width));
       width = com_pos;
-
+      mean += pos[i];
     }
+  mean /= num_comma;
+  cout << mean << "\n";
+  mean--;
 
-  for (i=0; i<pos[num_comma-1]; i++)
-    {
-      fuel = 0;
+  // for (i=0; i<pos[num_comma-1]; i++)
+  //   {
+  fuel = 0;
       for (j=0; j<num_comma; j++)
 	{
-	  diff = abs(pos[j]-i);
+	  diff = abs(pos[j]-int(round(mean)));
+	  contr = 0;
 	  for (k=1; k<=diff; k++)
 	    {
-	      fuel += k;
+	      contr += k;
 	    }
+	  //cout << pos[j] << " " << contr << "\n";
+	  fuel += contr;
 	}
       //cout << pos[i] << " " << fuel << "\n";
-    if (fuel<min_fuel)
-      {
-       min_fuel = fuel;
-       mean = i;
-      }
-    }
+    // if (fuel<min_fuel)
+    //   {
+    //    min_fuel = fuel;
+    //    mean = i;
+    //   }
+    // }
   
   
-  cout << min_fuel << " " << mean << "\n";
+      cout << fuel << " " << int(round(mean)) << "\n";
 
   
   
