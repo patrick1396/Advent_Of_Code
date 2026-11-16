@@ -14,11 +14,28 @@ def Triangle_Inverse(t):
 
 def TSP(curr_node, num_nodes, nodes, edges, shortest_length, shortest_path, curr_length, curr_path):
     nodes[curr_node] = False
+
+    #If all the nodes have been visited then check whether shortest length should be updated.
     if(np.all(nodes==False)):
-        current_length < 
+        #Not sure if this check is necessary as if we've made it this far then the path can't be longer than shortest path.
+        if (curr_length < shortest_length):
+            shortest_length = curr_length
+            shortest_path = curr_path.copy()
+            return (shortest_length, shortest_path)
 
+    #print(edges)
+    for i in range(0, num_nodes+1):
+        if (nodes[i]== False):
+            continue
+        curr_path.append(i)
+        curr_length += edges[curr_node, i]
+        if (curr_length <= shortest_length):
+            shortest_length, shortest_path = TSP(i, num_nodes, nodes.copy(), edges, shortest_length, shortest_path, curr_length, curr_path)
 
-    
+        curr_path.pop()
+        curr_length -= edges[curr_node, i]
+        
+
     return (shortest_length, shortest_path)
     
 def main():
@@ -65,10 +82,12 @@ def main():
     print(nodes)
     print(shortest_length)
     shortest_path = []
-
-    shortest_length, shortest_path = TSP(0, num_nodes, nodes, edges, shortest_length, shortest_path, 0, [])
-
+    print()
+    
+    shortest_length, shortest_path = TSP(0, num_nodes, nodes.copy(), edges, shortest_length, shortest_path, 0, [])
+    print(nodes)
     print(shortest_length)
-    print(shortest_path) 
+    print(shortest_path)
+    
 if __name__ == '__main__':
     main()
